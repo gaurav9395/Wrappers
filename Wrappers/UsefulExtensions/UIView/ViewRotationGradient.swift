@@ -1,6 +1,5 @@
 import UIKit
 
-// MARK: - Rotation animation
 extension UIView {
     struct Keys {
         private init() {}
@@ -8,20 +7,27 @@ extension UIView {
         static let rotation = "rotationOfView"
     }
     
-    func startRotating(duration: Double = 1) {
-        if self.layer.animation(forKey: Keys.rotation) == nil {
+    /**
+     Starts rotating a view at it's center
+     - parameter duration: Time duration to show the rotation animation
+     */
+    func startRotating(withDuration duration: Double = 1) {
+        if layer.animation(forKey: Keys.rotation) == nil {
             let animate = CABasicAnimation(keyPath: "transform.rotation")
             animate.duration = duration
             animate.repeatCount = Float.infinity
             animate.fromValue = 0.0
             animate.toValue = Float(Double.pi * 2.0)
-            self.layer.add(animate, forKey: Keys.rotation)
+            layer.add(animate, forKey: Keys.rotation)
         }
     }
     
-    func stopRotating() {
-        if self.layer.animation(forKey: Keys.rotation) != nil {
-            self.layer.removeAnimation(forKey: Keys.rotation)
+    /**
+     Stops rotation of the view
+     */
+    func stopRotation() {
+        if layer.animation(forKey: Keys.rotation) != nil {
+            layer.removeAnimation(forKey: Keys.rotation)
         }
     }
 }
@@ -46,7 +52,12 @@ extension UIView {
         }
     }
     
-    func addGradientWith(colors: UIColor..., direction: Direction) {
+    /**
+     Adds gradient of colors passed to the view as a sublayer
+     - parameter direction: Desired direction(horizontal/vertical)
+     - parameter colors: Colors produce the target gradient
+     */
+    func addGradientWith(direction: Direction, and colors: UIColor...) {
         let gradient = CAGradientLayer()
         gradient.colors = colors.map{ $0.cgColor }
         gradient.frame = layer.frame
